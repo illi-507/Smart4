@@ -62,10 +62,7 @@ public class NNImpl{
 		//bias node from hidden layer to output
 		Node biasToOutput=new Node(3);
 		hiddenNodes.add(biasToOutput);
-		
-		
 
-		
 		//Output node
 		outputNode=new Node(4);
 		
@@ -86,11 +83,25 @@ public class NNImpl{
 	public Double calculateOutputForInstance(Instance inst)
 	{
 		// TODO: add code here
+		double output = 0.0;
+		//set all the input node input values
+		for(int i = 0; i < inst.attributes.size(); i++){
+			inputNodes.get(i).setInput(inst.attributes.get(i));
+		}
 		
-		
-		
-		
-		return outputNode.getOutput();
+		//for each hidden node, calculate output, use those as inputs into output node
+		//then calculate output value at output node
+		for(int i = 0; i < hiddenNodes.size(); i++){
+			hiddenNodes.get(i).calculateOutput();
+			double tempWeight = outputNode.parents.get(i).weight;
+			double tempOutput = hiddenNodes.get(i).getOutput();
+			output += tempWeight * tempOutput;
+		}
+		output = 1 / (1 + Math.exp((-1)*output));
+
+		//outputNode.calculateOutput();
+		return output;
+		//return outputNode.getOutput();
 	}
 	
 

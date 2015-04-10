@@ -29,7 +29,7 @@ public class HW4{
 		 *      1 : print the modified weights of the neural network after training it using 
 		 *          the first training instance for one epoch
 		 *      2 : print the modified weights of the neural network after training it using
-		 * 		 all the training instances for maxEpoch
+		 * 		 	all the training instances for maxEpoch
 		 *      3 : train the neural network with all the training instances for maxEpoch 
 		 *			 and then print output of each test instance
 		*/

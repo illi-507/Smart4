@@ -7,7 +7,6 @@
  * 
  */
 
-
 import java.util.*;
 
 public class Node{
@@ -40,12 +39,13 @@ public class Node{
 	//For an input node sets the input value which will be the value of a particular attribute
 	public void setInput(Double inputValue)
 	{
-		if(type==0)//If input node
+		if(type==0 || type == 2)//If input node
 		{
 			this.inputValue=inputValue;
+			//System.out.println("Input values are: " + inputValue);
 		}
 	}
-	
+
 	/**
 	 * Calculate the output of a sigmoid node.
 	 * You can assume that outputs of the parent nodes have already been calculated
@@ -54,11 +54,21 @@ public class Node{
 	 */
 	public void calculateOutput()
 	{
-		
-		if(type==2 || type==4)//Not an input or bias node
+		double inputTotal = 0.0;
+		double outputTotal = 0.0;
+		double parentValue, parentWeight;
+		if(type==2)//Not an input or bias node
 		{
-			// TODO: add code here
+			//for each parent get nodeweightpair and keep a total for inputs
+			for(NodeWeightPair parent : parents){
+				parentValue = parent.node.inputValue;
+				parentWeight = parent.weight;
+				inputTotal += parentValue * parentWeight;
+			}
 			
+			//then calculate sigmoid function with that result
+			outputTotal = 1 / (1 + Math.exp((-1)*inputTotal));
+			this.outputValue = outputTotal;
 		}
 	}
 	
