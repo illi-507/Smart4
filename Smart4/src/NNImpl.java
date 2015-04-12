@@ -83,7 +83,6 @@ public class NNImpl{
 	public Double calculateOutputForInstance(Instance inst)
 	{
 		// TODO: add code here
-		double output = 0.0;
 		//set all the input node input values
 		for(int i = 0; i < inst.attributes.size(); i++){
 			inputNodes.get(i).setInput(inst.attributes.get(i));
@@ -93,15 +92,10 @@ public class NNImpl{
 		//then calculate output value at output node
 		for(int i = 0; i < hiddenNodes.size(); i++){
 			hiddenNodes.get(i).calculateOutput();
-			double tempWeight = outputNode.parents.get(i).weight;
-			double tempOutput = hiddenNodes.get(i).getOutput();
-			output += tempWeight * tempOutput;
 		}
-		output = 1 / (1 + Math.exp((-1)*output));
 
-		//outputNode.calculateOutput();
-		return output;
-		//return outputNode.getOutput();
+		outputNode.calculateOutput();
+		return outputNode.getOutput();
 	}
 
 
@@ -124,7 +118,7 @@ public class NNImpl{
 
 		// TODO: add code here
 
-		for(int i = 0; i < 1/*this.maxEpoch*/; i++){
+		for(int i = 0; i < this.maxEpoch; i++){
 			for(Instance e : trainingSet){
 				output = calculateOutputForInstance(e);
 				teacher = e.classValue;
@@ -136,7 +130,8 @@ public class NNImpl{
 					NodeWeightPair hidden = outputNode.parents.get(j);
 					adjustedWeight = this.learningRate * hidden.node.getOutput() * error * output *(1-output);
 					value = hidden.weight * error * output * (1 - output);
-					
+					hidden.weight += adjustedWeight;
+
 					//update input -> hidden
 					if(hidden.node.parents != null){
 						for(int k = 0; k < hidden.node.parents.size(); k++){
@@ -145,8 +140,6 @@ public class NNImpl{
 									(1 - hidden.node.getOutput()) * value;
 						}
 					}
-					
-					hidden.weight += adjustedWeight;
 					//value += adjustedWeight * error * output * (1 - output);
 				}
 			}

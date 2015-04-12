@@ -39,10 +39,9 @@ public class Node{
 	//For an input node sets the input value which will be the value of a particular attribute
 	public void setInput(Double inputValue)
 	{
-		if(type==0 || type == 2)//If input node
+		if(type==0)//If input node
 		{
 			this.inputValue=inputValue;
-			//System.out.println("Input values are: " + inputValue);
 		}
 	}
 
@@ -57,11 +56,11 @@ public class Node{
 		double inputTotal = 0.0;
 		double outputTotal = 0.0;
 		double parentValue, parentWeight;
-		if(type==2)//Not an input or bias node
+		if(type==2 || type == 4)//Not an input or bias node
 		{
 			//for each parent get nodeweightpair and keep a total for inputs
 			for(NodeWeightPair parent : parents){
-				parentValue = parent.node.inputValue;
+				parentValue = parent.node.getOutput();
 				parentWeight = parent.weight;
 				inputTotal += parentValue * parentWeight;
 			}
